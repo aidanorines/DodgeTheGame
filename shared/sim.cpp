@@ -93,6 +93,11 @@ void stepWorld(World& w, const std::map<uint8_t, Input>& inputs, float dt) {
   }
 }
 
+void eliminatePlayer(World& w, uint8_t id) {
+  for (auto& p : w.players)
+    if (p.id == id && p.alive) eliminate(w, p);
+}
+
 std::vector<Placement> placements(const World& w) {
   auto outKey = [](const PlayerState& p) { return p.alive ? UINT32_MAX : p.outTick; };
   std::vector<Placement> out;

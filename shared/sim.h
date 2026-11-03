@@ -54,6 +54,8 @@ struct Placement {
 World makeWorld(const std::vector<uint8_t>& playerIds, uint32_t seed);
 void stepWorld(World& w, const std::map<uint8_t, Input>& inputs, float dt);
 bool allEliminated(const World& w);
+// Eliminate a player now (e.g. they left). No-op if unknown or already out.
+void eliminatePlayer(World& w, uint8_t id);
 
 // Seconds between hazard spawns at match time t.
 float spawnInterval(float t);
