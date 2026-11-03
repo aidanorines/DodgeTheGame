@@ -23,10 +23,9 @@ if(WIN32)
   target_link_libraries(enet PUBLIC ws2_32 winmm)
 endif()
 
-# shortcut: header-only until Task 2 adds the first .cpp, then switch to STATIC.
-add_library(dodge_shared INTERFACE)
-target_include_directories(dodge_shared INTERFACE ${CMAKE_SOURCE_DIR})
-target_link_libraries(dodge_shared INTERFACE enet)
+add_library(dodge_shared STATIC shared/names.cpp shared/sim.cpp)
+target_include_directories(dodge_shared PUBLIC ${CMAKE_SOURCE_DIR})
+target_link_libraries(dodge_shared PUBLIC enet)
 
 # shortcut: header-only until Task 6 adds server sources, then switch to STATIC.
 add_library(dodge_server_lib INTERFACE)
@@ -40,6 +39,7 @@ target_include_directories(dodge_client PRIVATE ${raygui_SOURCE_DIR}/src)
 target_link_libraries(dodge_client PRIVATE dodge_shared raylib)
 
 enable_testing()
-add_executable(dodge_tests tests/test_main.cpp tests/test_smoke.cpp)
+add_executable(dodge_tests tests/test_main.cpp tests/test_smoke.cpp tests/test_names.cpp
+  tests/test_sim_players.cpp tests/test_sim_hazards.cpp)
 target_link_libraries(dodge_tests PRIVATE dodge_server_lib doctest::doctest)
 add_test(NAME dodge_tests COMMAND dodge_tests)
