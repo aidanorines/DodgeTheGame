@@ -1,7 +1,24 @@
 # Dodge
 
 Design doc for Dodge, a 2D arcade survival game in C++. Agreed 2026-11-03.
-Status: design only. Nothing is built yet. Do not scaffold or write code until the user says so.
+Status: building. Follow `docs/superpowers/plans/2026-11-03-dodge-mvp.md` task by task.
+
+## Git workflow
+
+- One branch per layer, as mapped in the plan's Branches table. Work only on the branch that owns the task.
+- Commit after every completed plan step that changes files. Push that branch to `origin` after each commit.
+- Merge a layer branch into `main` only when all its tasks pass.
+- Commit message format (Conventional Commits):
+
+  ```
+  <type>(<scope>): <imperative summary, lowercase, no period, max 72 chars>
+
+  <body: what changed and why, wrapped at 72 chars>
+
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+  ```
+
+  Types: `feat`, `fix`, `test`, `refactor`, `build`, `docs`, `chore`. Scopes: `shared`, `server`, `client`, `build`, `docs`.
 
 Items marked **(Claude's call)** were filled in by Claude, not decided by the user. Change them freely.
 
