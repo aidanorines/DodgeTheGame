@@ -33,9 +33,9 @@ target_link_libraries(dodge_server_lib PUBLIC dodge_shared)
 add_executable(dodge_server server/main.cpp)
 target_link_libraries(dodge_server PRIVATE dodge_server_lib)
 
-add_executable(dodge_client client/main.cpp)
+add_executable(dodge_client client/main.cpp client/screens.cpp client/render.cpp)
 target_include_directories(dodge_client PRIVATE ${raygui_SOURCE_DIR}/src)
-target_link_libraries(dodge_client PRIVATE dodge_shared raylib)
+target_link_libraries(dodge_client PRIVATE dodge_server_lib raylib)
 
 enable_testing()
 add_executable(dodge_tests tests/test_main.cpp tests/test_smoke.cpp tests/test_names.cpp
