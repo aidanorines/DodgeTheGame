@@ -27,7 +27,7 @@ add_library(dodge_shared STATIC shared/names.cpp shared/sim.cpp shared/protocol.
 target_include_directories(dodge_shared PUBLIC ${CMAKE_SOURCE_DIR})
 target_link_libraries(dodge_shared PUBLIC enet)
 
-add_library(dodge_server_lib STATIC server/party.cpp server/registry.cpp)
+add_library(dodge_server_lib STATIC server/party.cpp server/registry.cpp server/server.cpp server/lan.cpp)
 target_link_libraries(dodge_server_lib PUBLIC dodge_shared)
 
 add_executable(dodge_server server/main.cpp)
@@ -40,6 +40,7 @@ target_link_libraries(dodge_client PRIVATE dodge_shared raylib)
 enable_testing()
 add_executable(dodge_tests tests/test_main.cpp tests/test_smoke.cpp tests/test_names.cpp
   tests/test_sim_players.cpp tests/test_sim_hazards.cpp tests/test_protocol.cpp
-  tests/test_party.cpp tests/test_registry.cpp)
+  tests/test_party.cpp tests/test_registry.cpp tests/test_server.cpp
+  tests/test_lan.cpp)
 target_link_libraries(dodge_tests PRIVATE dodge_server_lib doctest::doctest)
 add_test(NAME dodge_tests COMMAND dodge_tests)

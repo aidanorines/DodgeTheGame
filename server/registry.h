@@ -16,7 +16,7 @@ class PartyRegistry {
 
   std::string create();  // new online party, returns its code
   Party* find(std::string_view rawCode);
-  void tick(float dt);  // ticks every party, then erases closed ones
+  void tick(float dt);  // erases parties closed since the last tick, then ticks the rest
   size_t size() const { return parties_.size(); }
 
  private:

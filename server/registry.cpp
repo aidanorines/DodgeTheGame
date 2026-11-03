@@ -18,8 +18,8 @@ Party* PartyRegistry::find(std::string_view rawCode) {
 }
 
 void PartyRegistry::tick(float dt) {
-  for (auto& [code, party] : parties_) party.tick(dt);
   std::erase_if(parties_, [](const auto& kv) { return kv.second.phase() == Phase::Closed; });
+  for (auto& [code, party] : parties_) party.tick(dt);
 }
 
 }  // namespace dodge
