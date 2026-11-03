@@ -7,7 +7,8 @@ Status: building. Follow `docs/superpowers/plans/2026-11-03-dodge-mvp.md` task b
 
 - One branch per layer, as mapped in the plan's Branches table. Work only on the branch that owns the task.
 - Commit after every completed plan step that changes files. Push that branch to `origin` after each commit.
-- Merge a layer branch into `main` only when all its tasks pass.
+- Merge a layer branch into `main` only when all its tasks pass. Merge by squash and rebase: squash the
+  branch into one commit on top of `main`, force-push the branch with lease, then fast-forward `main`.
 - Commit message format (Conventional Commits):
 
   ```
