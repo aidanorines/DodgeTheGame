@@ -9,11 +9,13 @@ namespace dodge {
 
 struct Vec2 {
   float x = 0, y = 0;
+  bool operator==(const Vec2&) const = default;
 };
 
 // Client intent. Untrusted: stepWorld clamps it.
 struct Input {
   float dx = 0, dy = 0;
+  bool operator==(const Input&) const = default;
 };
 
 struct PlayerState {
@@ -22,12 +24,14 @@ struct PlayerState {
   bool alive = true;
   float survived = 0;
   uint32_t outTick = 0;
+  bool operator==(const PlayerState&) const = default;
 };
 
 struct Hazard {
   uint32_t id = 0;
   Vec2 pos;
   Vec2 vel;
+  bool operator==(const Hazard&) const = default;
 };
 
 struct World {
@@ -44,6 +48,7 @@ struct Placement {
   uint8_t id = 0;
   uint8_t place = 0;
   float survived = 0;
+  bool operator==(const Placement&) const = default;
 };
 
 World makeWorld(const std::vector<uint8_t>& playerIds, uint32_t seed);

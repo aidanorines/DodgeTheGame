@@ -23,7 +23,7 @@ if(WIN32)
   target_link_libraries(enet PUBLIC ws2_32 winmm)
 endif()
 
-add_library(dodge_shared STATIC shared/names.cpp shared/sim.cpp)
+add_library(dodge_shared STATIC shared/names.cpp shared/sim.cpp shared/protocol.cpp)
 target_include_directories(dodge_shared PUBLIC ${CMAKE_SOURCE_DIR})
 target_link_libraries(dodge_shared PUBLIC enet)
 
@@ -40,6 +40,6 @@ target_link_libraries(dodge_client PRIVATE dodge_shared raylib)
 
 enable_testing()
 add_executable(dodge_tests tests/test_main.cpp tests/test_smoke.cpp tests/test_names.cpp
-  tests/test_sim_players.cpp tests/test_sim_hazards.cpp)
+  tests/test_sim_players.cpp tests/test_sim_hazards.cpp tests/test_protocol.cpp)
 target_link_libraries(dodge_tests PRIVATE dodge_server_lib doctest::doctest)
 add_test(NAME dodge_tests COMMAND dodge_tests)
