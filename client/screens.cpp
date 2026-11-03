@@ -137,6 +137,11 @@ Screen drawLobby(ClientState& s) {
 
 }  // namespace
 
+void drawMatchOverlay(ClientState& s, bool alive) {
+  if (!alive) centerText("Spectating", 16, 28, RAYWHITE);
+  if (s.netMode == Mode::Online && GuiButton({GetScreenWidth() - 136.0f, 12, 120, 40}, "Leave")) act(s, Action::Leave);
+}
+
 void initMenuStyle() { GuiSetStyle(DEFAULT, TEXT_SIZE, 24); }
 
 Screen drawMenu(ClientState& s) {

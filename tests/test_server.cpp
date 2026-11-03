@@ -182,6 +182,18 @@ TEST_CASE("leaving updates the others") {
   CHECK(a.waitFor<LobbyState>(2000, [](const LobbyState& s) { return s.players.size() == 1; }));
 }
 
+TEST_CASE("stopping the server closes parties") {
+  std::atomic<bool> stop{false};
+  std::thread thread([&] { runServer({Mode::Lan, 17785, "Host"}, stop); });
+  TestClient a(17785);
+  REQUIRE(a.connected);
+  a.send(Hello{kProtocolVersion, Mode::Lan, "Host"});
+  REQUIRE(a.waitFor<Welcome>(2000));
+  stop = true;
+  CHECK(a.waitFor<PartyClosed>(2000));
+  thread.join();
+}
+
 TEST_CASE("solo plays through and the server exits") {
   std::atomic<bool> stop{false};
   std::thread thread([&] { runServer({Mode::Solo, 17780, ""}, stop); });

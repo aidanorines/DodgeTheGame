@@ -36,6 +36,9 @@ struct ClientState {
 
 void initMenuStyle();  // call once after InitWindow
 
+// Spectating label, and the Leave button online (records Action::Leave).
+void drawMatchOverlay(ClientState& s, bool alive);
+
 // Draws the current menu screen and returns the screen to show next frame.
 // Match, Countdown and Results are drawn by render.h.
 Screen drawMenu(ClientState& s);

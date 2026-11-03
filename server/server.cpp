@@ -78,6 +78,7 @@ class Server {
     switch (e.type) {
       case ENET_EVENT_TYPE_CONNECT:
         conns_[e.peer] = {nextPeerId_++, Clock::now()};
+        enet_peer_timeout(e.peer, 0, 2000, 5000);  // count a dead client as gone in 5 s, not ENet's 30 s
         break;
       case ENET_EVENT_TYPE_RECEIVE:
         if (auto it = conns_.find(e.peer); it != conns_.end())
@@ -102,6 +103,14 @@ class Server {
     for (auto it = tracks_.begin(); it != tracks_.end();) {
       syncParty(*it->first, it->second);
       it = it->first->phase() == Phase::Closed ? tracks_.erase(it) : std::next(it);
+    }
+  }
+
+  // Server shutting down: tell everyone still connected.
+  void closeAll() {
+    for (auto& [peer, c] : conns_) {
+      send(peer, PartyClosed{});
+      enet_peer_disconnect_later(peer, 0);
     }
   }
 
@@ -276,6 +285,7 @@ void runServer(const ServerConfig& cfg, std::atomic<bool>& stop) {
     if (Clock::now() - next > std::chrono::milliseconds(250)) next = Clock::now();  // after a stall, do not fast-forward
   }
 
+  if (stop) server.closeAll();
   enet_host_flush(host);
   drain(host);
   enet_host_destroy(host);
