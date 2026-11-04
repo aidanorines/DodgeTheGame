@@ -1,7 +1,7 @@
 # Dodge
 
 Design doc for Dodge, a 2D arcade survival game in C++. Agreed 2026-11-03.
-Status: building. Follow `docs/superpowers/plans/2026-11-03-dodge-mvp.md` task by task.
+Status: MVP built per `docs/superpowers/plans/2026-11-03-dodge-mvp.md`. Build and test with `sh scripts/docker-build.sh`. Not yet built or run on Windows.
 
 ## Git workflow
 

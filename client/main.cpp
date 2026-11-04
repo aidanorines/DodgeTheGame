@@ -4,6 +4,7 @@
 #include <string>
 #include <thread>
 
+#include "client/config.h"
 #include "client/net_client.h"
 #include "client/render.h"
 #include "client/screens.h"
@@ -16,8 +17,6 @@ using namespace dodge;
 
 namespace {
 
-// shortcut: fixed address, Task 12 reads it from dodge.cfg.
-constexpr const char* kOnlineHost = "127.0.0.1";
 // shortcut: fixed port, so two solo games on one PC clash; pick a free port if that ever matters.
 constexpr uint16_t kSoloPort = kGamePort + 2;
 
@@ -116,7 +115,7 @@ class App {
           net_.connect("127.0.0.1", kGamePort);
           hello(Mode::Lan);
         } else {
-          net_.connect(kOnlineHost, kGamePort);
+          net_.connect(config_.onlineHost, config_.onlinePort);
           hello(Mode::Online);
           net_.send(CreateParty{});
         }
@@ -128,7 +127,7 @@ class App {
         break;
       case Action::JoinCode:
         if (net_.active()) break;
-        net_.connect(kOnlineHost, kGamePort);
+        net_.connect(config_.onlineHost, config_.onlinePort);
         hello(Mode::Online);
         net_.send(JoinParty{s_.code});
         break;
@@ -208,6 +207,7 @@ class App {
     s_.lanGames = browser_->games();
   }
 
+  ClientConfig config_ = loadConfig("dodge.cfg");
   ClientState s_;
   NetClient net_;
   std::optional<LanBrowser> browser_;

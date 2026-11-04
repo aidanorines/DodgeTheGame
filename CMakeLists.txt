@@ -9,14 +9,20 @@ set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 include(FetchContent)
 set(FETCHCONTENT_QUIET OFF)
 
+option(DODGE_SERVER_ONLY "Build only dodge_server, without graphics dependencies" OFF)
+
 FetchContent_Declare(enet GIT_REPOSITORY https://github.com/lsalzman/enet.git GIT_TAG v1.3.18 GIT_SHALLOW TRUE)
+FetchContent_MakeAvailable(enet)
+
+if(NOT DODGE_SERVER_ONLY)
 FetchContent_Declare(doctest GIT_REPOSITORY https://github.com/doctest/doctest.git GIT_TAG v2.4.11 GIT_SHALLOW TRUE)
 FetchContent_Declare(raylib GIT_REPOSITORY https://github.com/raysan5/raylib.git GIT_TAG 5.5 GIT_SHALLOW TRUE)
 # raygui is header-only with no root CMakeLists; SOURCE_SUBDIR to a missing dir makes MakeAvailable only download it.
 FetchContent_Declare(raygui GIT_REPOSITORY https://github.com/raysan5/raygui.git GIT_TAG 4.0 GIT_SHALLOW TRUE SOURCE_SUBDIR none)
 
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(enet doctest raylib raygui)
+FetchContent_MakeAvailable(doctest raylib raygui)
+endif()
 
 target_include_directories(enet PUBLIC ${enet_SOURCE_DIR}/include)
 if(WIN32)
@@ -33,7 +39,11 @@ target_link_libraries(dodge_server_lib PUBLIC dodge_shared)
 add_executable(dodge_server server/main.cpp)
 target_link_libraries(dodge_server PRIVATE dodge_server_lib)
 
-add_executable(dodge_client client/main.cpp client/screens.cpp client/render.cpp client/net_client.cpp)
+if(DODGE_SERVER_ONLY)
+  return()
+endif()
+
+add_executable(dodge_client client/main.cpp client/screens.cpp client/render.cpp client/net_client.cpp client/config.cpp)
 target_include_directories(dodge_client PRIVATE ${raygui_SOURCE_DIR}/src)
 target_link_libraries(dodge_client PRIVATE dodge_server_lib raylib)
 
@@ -41,6 +51,6 @@ enable_testing()
 add_executable(dodge_tests tests/test_main.cpp tests/test_smoke.cpp tests/test_names.cpp
   tests/test_sim_players.cpp tests/test_sim_hazards.cpp tests/test_protocol.cpp
   tests/test_party.cpp tests/test_registry.cpp tests/test_server.cpp
-  tests/test_lan.cpp)
+  tests/test_lan.cpp tests/test_config.cpp client/config.cpp)
 target_link_libraries(dodge_tests PRIVATE dodge_server_lib doctest::doctest)
 add_test(NAME dodge_tests COMMAND dodge_tests)

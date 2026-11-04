@@ -118,7 +118,7 @@ Screen drawCodeEntry(ClientState& s) {
 
 Screen drawLobby(ClientState& s) {
   title("Lobby");
-  if (!s.lobby.code.empty()) centerText(TextFormat("Party code: %s", s.lobby.code.c_str()), row(0).y - 60, 28, DARKGRAY);
+  if (!s.lobby.code.empty()) centerText(TextFormat("Party code: %s", s.lobby.code.c_str()), row(0).y - 46, 28, DARKGRAY);
 
   const float x = row(0).x;
   float y = row(0).y;
