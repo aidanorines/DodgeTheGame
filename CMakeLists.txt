@@ -25,9 +25,6 @@ FetchContent_MakeAvailable(doctest raylib raygui)
 endif()
 
 target_include_directories(enet PUBLIC ${enet_SOURCE_DIR}/include)
-if(WIN32)
-  target_link_libraries(enet PUBLIC ws2_32 winmm)
-endif()
 
 add_library(dodge_shared STATIC shared/names.cpp shared/sim.cpp shared/protocol.cpp shared/party_code.cpp)
 target_include_directories(dodge_shared PUBLIC ${CMAKE_SOURCE_DIR})
@@ -46,6 +43,12 @@ endif()
 add_executable(dodge_client client/main.cpp client/screens.cpp client/render.cpp client/net_client.cpp client/config.cpp)
 target_include_directories(dodge_client PRIVATE ${raygui_SOURCE_DIR}/src)
 target_link_libraries(dodge_client PRIVATE dodge_server_lib raylib)
+if(WIN32)
+  set_target_properties(dodge_client PROPERTIES WIN32_EXECUTABLE ON)  # no console window behind the game
+  if(MSVC)
+    target_link_options(dodge_client PRIVATE /ENTRY:mainCRTStartup)
+  endif()
+endif()
 
 enable_testing()
 add_executable(dodge_tests tests/test_main.cpp tests/test_smoke.cpp tests/test_names.cpp

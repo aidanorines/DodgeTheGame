@@ -3,6 +3,6 @@ FROM ubuntu:24.04
 RUN apt-get update && apt-get install -y --no-install-recommends \
       build-essential cmake git ca-certificates \
       libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev \
-      xvfb xdotool imagemagick libgl1-mesa-dri \
+      xvfb xdotool imagemagick libgl1-mesa-dri       g++-mingw-w64-x86-64-posix \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
